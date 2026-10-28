@@ -60,7 +60,7 @@ On prod the link exposes real health data. Ask the user before generating one.
 
 ## Evidence
 
-- Save everything from a run (screenshots, scripts, logs) in one folder: `.playwright-mcp/<pages-tested>_<YYYY-MM-DD>/`. If that folder already exists, add a suffix: `-2`, `-3`, and so on.
+- Save everything from a run (screenshots, scripts, logs) in one folder on the user's desktop: `~/Desktop/hih-qa-audits/<pages-tested>_<YYYY-MM-DD>/` (create it if missing). Never save audit files inside the repo. If that folder already exists, add a suffix: `-2`, `-3`, and so on.
 - Take a screenshot only when something is breaking; inspect everything else via DOM snapshots, not screenshots. Many screenshots eat disk space.
 - Save screenshots as JPEG at 80% quality (e.g. `type: 'jpeg', quality: 80`), never full-quality PNG.
 - Write a `report.md` in the same folder. Put each screenshot in it with a caption directly below the image saying what's breaking, e.g. `![](home-320.jpg)` followed by *"320px: Download report CTA wraps to 2 lines and overlaps Report highlights."*
