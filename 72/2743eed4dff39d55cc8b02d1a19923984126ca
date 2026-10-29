@@ -1,0 +1,33 @@
+.gitignore
+  s_7a75c8af3e2aa6::t_4b5a2f3e81c19b 1
+.claude-plugin/marketplace.json
+  s_7a75c8af3e2aa6::t_d53e45a3638940 1-16
+plugins/hih-qa/.claude-plugin/plugin.json
+  s_7a75c8af3e2aa6::t_118bdef6080010 1-7
+plugins/hih-qa/skills/hih-qa/SKILL.md
+  s_7a75c8af3e2aa6::t_004a8d3a117a41 3,10-14,71-87
+plugins/hih-qa/skills/hih-qa/pages/body-system.md
+  s_7a75c8af3e2aa6::t_beecd9d61ca554 4-6
+plugins/hih-qa/skills/hih-qa/pages/health-score.md
+  s_7a75c8af3e2aa6::t_9b08dca0876dda 22-24
+plugins/hih-qa/skills/hih-qa/pages/homepage.md
+  s_7a75c8af3e2aa6::t_b32bedc0992e5f 3-5,8-17,20-21,24-33
+plugins/hih-qa/skills/hih-qa/ux-audit.md
+  s_7a75c8af3e2aa6::t_5c665c3b6be8a9 1-115
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "722743eed4dff39d55cc8b02d1a19923984126ca",
+  "prompts": {},
+  "sessions": {
+    "s_7a75c8af3e2aa6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fb5c6067-9b8a-441f-8c8e-e1a767881a59",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Gurditt Singh Khurana <gurditt.khurana@1mg.com>"
+    }
+  }
+}
