@@ -1,0 +1,23 @@
+plugins/hih-qa/.claude-plugin/plugin.json
+  s_edd6559be489e2::t_320218ea740aac 3
+plugins/hih-qa/skills/hih-qa/SKILL.md
+  s_edd6559be489e2::t_eae760103cd1c5 10-11,36,68-76,80,83-88,100-101,108
+plugins/hih-qa/skills/hih-qa/ux-audit.md
+  s_edd6559be489e2::t_86041f1518d7b9 23,107,115
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2362d534c1c8bacbdfb5b3ff5cdbc2c7bea1bc12",
+  "prompts": {},
+  "sessions": {
+    "s_edd6559be489e2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75f16e30-a457-4e35-8b7a-f59e252e401c",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Gurditt Singh Khurana <gurditt.khurana@1mg.com>"
+    }
+  }
+}
