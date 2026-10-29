@@ -7,6 +7,8 @@ description: Use when asked to test, QA, or verify HIH (Health Records) flows on
 
 Drive the browser with whatever browser-use or computer-use tool you have (e.g. the Playwright MCP in Claude Code). URL: prod `https://1mg.com/health-record`, else `https://<env>.1mg.com/health-record` (e.g. stag, earth).
 
+Playwright MCP notes: `browser_run_code_unsafe` has no `fs` or `require`, so you can't write files from it. Emulate mobile with `page.context().newCDPSession(page)` (`Emulation.setUserAgentOverride`, `setDeviceMetricsOverride` with `mobile: true`, `setTouchEmulationEnabled`) and re-apply the metrics after a navigation if the viewport looks wrong. `locator.tap()` fails without a `hasTouch` context, so use `click` or `page.mouse.click`. `page.screencast.start({ path, size: { width: 375, height: 844 } })` / `stop()` records a clip server-side, so use it for recordings (the path must be under the MCP's allowed roots).
+
 ## Run scope
 
 - **Default: one page or flow that's about to be released.** Run QA and the UX audit on that page or flow only, plus the entry point that leads into it. If the user hasn't named a page or flow, ask which one. If they give a PR or branch, map its changed files to pages and confirm the list with them. Expect 10–20 minutes.
@@ -31,7 +33,7 @@ Never test other widths or zoom levels, and never resize on purpose to make the 
 ## Sign in (skip if already signed in)
 
 Static sign-in page → tap bottom button → bottom sheet with number input.
-- **Non-prod:** number `9140942009` (unless the user gives another) → **Proceed** → OTP `123456` → tap bottom button (Proceed/Login).
+- **Non-prod:** number `9140942009` (unless the user gives another) → **Get verification code** → OTP `123456` (type it into the first box; it fills all six) → **Continue**. Button labels change, so match on role and visible text, not on this list.
 - **Prod:** test creds don't work. Ask user for number → **Send OTP** → get OTP: if Gmail is signed in on this browser, open the latest "OTP for Tata 1mg" mail in a new tab; else ask the user → enter OTP → tap bottom button.
 
 ## Pages
@@ -63,12 +65,27 @@ Test every share entry point you come across, e.g. the share icon in the Paramet
 
 On prod the link exposes real health data. Ask the user before generating one.
 
+## Severity
+
+Give every finding, functional or UX, one severity:
+- **High:** blocks a core task, loses or exposes data, or shows clearly wrong health data (e.g. wrong score, wrong report).
+- **Medium:** visibly wrong or broken but the user can carry on: counts that disagree between screens, a link that goes to the wrong place, a blank or glitching transition, a sheet that blocks taps.
+- **Low:** polish: copy and typos, small jumps, minor alignment.
+
+Mark an issue **unconfirmed** if you saw it once and could not reproduce it. Do not drop it.
+
 ## Evidence
 
 - Save everything from a run (screenshots, scripts, logs) in one folder on the user's desktop: `~/Desktop/hih-qa-audits/<pages-tested>_<YYYY-MM-DD>/` (create it if missing). Never save audit files inside the repo. If that folder already exists, add a suffix: `-2`, `-3`, and so on.
-- Take a screenshot only when something is breaking; inspect everything else via DOM snapshots, not screenshots. Many screenshots eat disk space.
+- **Media is for issues only.** Take a screenshot or recording only when it shows a finding. Never keep media of a flow that works. Say that it works in text, in the "What is fine" list. Inspect everything else with DOM snapshots and frame sampling.
 - Save screenshots as JPEG at 80% quality (e.g. `type: 'jpeg', quality: 80`), never full-quality PNG.
 - Write a `report.md` in the same folder for functional and layout bugs. Put each screenshot in it with a caption directly below the image saying what's breaking, e.g. `![](home-320.jpg)` followed by *"320px: Download report CTA wraps to 2 lines and overlaps Report highlights."*
+- Lay out `report.md` and `ux-audit.md` so a reader sees what is broken before anything else:
+  1. **Summary first:** the issue count per severity (e.g. "7 issues: 0 High, 4 Medium, 3 Low"), a one-line verdict, and a table with one row per issue: number, severity, one-line title, where, type (bug, UX, copy).
+  2. **Issues next, grouped by severity** (High, then Medium, then Low), each headed with its number and severity. Under it: where, what the user sees, evidence (the screenshot or clip, if any), likely cause, expected behaviour.
+  3. **What is fine last,** as a short text-only list of what you checked and found working (including which share flows work). No media here.
+  4. **Not covered,** one line.
+- Never put an item that works in the issues section, and never put an issue in the "What is fine" list.
 - Write UX findings (animations, transitions, interaction feel) in a separate `ux-audit.md`, each with a short screen recording in `recordings/`. See **UX audit** below.
 
 ## UX audit
@@ -80,15 +97,15 @@ On every page you test, run each interaction that has motion: sheets, steps insi
 When the run is done, publish it to the **Health Records** Confluence space (key `HEA`) in the folder **HIH Mweb QA & UX Audits**.
 
 1. Find the folder with CQL: `space = HEA AND type = folder AND title = "HIH Mweb QA & UX Audits"`. Create it at the space root only if it doesn't exist.
-2. In that folder, create one page per run, titled `<pages tested> – QA & UX audit – <DD Mon YYYY>`. Put the `report.md` content first, then `ux-audit.md`.
-3. Upload the screenshots and recordings as attachments to that page (`createConfluenceAttachment` returns a curl upload command), and embed each one next to its finding.
+2. In that folder, create one page per run, titled `<pages tested> – QA & UX audit – <DD Mon YYYY>`. Use the same layout as the files: summary table with severity lozenges first (`<span data-type="status" data-color="yellow">Medium</span>`; use red for High, yellow for Medium, neutral for Low), then issues by severity, then the "What is fine" panel (`panel-success`). Don't publish `report.md` and `ux-audit.md` as two separate halves.
+3. Upload only the screenshots and recordings that are attached to an issue, as attachments to that page (`createConfluenceAttachment` returns a curl upload command; its bearer token works for every file on that page for a few minutes, so upload the whole batch with one token), and embed each one next to its finding. The Atlassian MCP can't delete attachments, so don't upload anything you won't embed.
 4. Reply with the page link.
 
 If the run used a real user's account rather than a test account, the screenshots and recordings show real health data. Ask the user before publishing.
 
 ## Teardown (when done)
 
-Leave nothing that would block another agent's sanity run: close every tab and the browser session, and stop any dev server or background process you started.
+Leave nothing that would block another agent's sanity run: clear all cookies and storage in the browser (closing the page does not sign you out; the Playwright profile keeps its cookies), close every tab and the browser session, and stop any dev server or background process you started.
 
 ## Always check (every page)
 

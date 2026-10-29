@@ -20,7 +20,7 @@ A single screenshot can't show a broken transition. Measure every frame instead.
 
 ## Recordings
 
-Recordings are the most important evidence for UX findings, and every UX finding needs one. Keep them short: a reviewer should see the bug within the first second, with no dead time.
+Recordings are the most important evidence for UX findings, and every UX finding needs one. Record only findings: if a transition is fine, don't keep a clip, just list it under **Checked, no issue**. Keep them short: a reviewer should see the bug within the first second, with no dead time.
 
 Record in the tab that is already signed in. Copying cookies into a new browser context doesn't carry the 1mg login.
 
@@ -104,7 +104,7 @@ MP4="-c:v libx264 -pix_fmt yuv420p -crf 23 -movflags +faststart"
 
 Write UX findings in `ux-audit.md`, a separate file from `report.md`, which is for functional and layout bugs. For each finding include:
 
-- **Title and severity:** Blocker / High / Medium / Low.
+- **Title and severity:** High / Medium / Low, as defined under **Severity** in `SKILL.md`.
 - **Where:** page → action, e.g. Homepage → Switch Profile → Merge.
 - **What the user sees,** in one or two plain sentences.
 - **Recording:** link to the clip, plus the slow-motion copy if there is one.
@@ -112,4 +112,4 @@ Write UX findings in `ux-audit.md`, a separate file from `report.md`, which is f
 - **Likely cause,** with `file:line` if you found it in the code.
 - **Expected behaviour.**
 
-End the file with a **Checked, no issue** list and any method notes.
+Start the file with the summary table described under **Evidence** in `SKILL.md`, and order findings High, then Medium, then Low. End the file with a text-only **Checked, no issue** list (no clips) and any method notes.
