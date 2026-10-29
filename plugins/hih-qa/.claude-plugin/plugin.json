@@ -1,0 +1,7 @@
+{
+  "name": "hih-qa",
+  "version": "0.1.0",
+  "description": "QA and UX audits for HIH (Health Records) mweb pages, with short screen recordings and Confluence publishing.",
+  "author": { "name": "Gurditt Singh Khurana" },
+  "repository": "https://github.com/gurditt-khurana/skills"
+}

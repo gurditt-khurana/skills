@@ -19,6 +19,8 @@ Top → bottom:
 7. **More for you**: **What is health score?** → `/health-record/<patientId>/about-health-score` (static explainer: what the score is, how it's computed, the body systems and parameters measured), and **Check your score accuracy** → bottom sheet: "Score accuracy high!" / impacting factors (x/12 body systems tested, y/12 untested with names, "Get tested to improve accuracy").
 8. Footer illustration "Smart care for the ones you love".
 
-Floating **Share progress** pill at the bottom (see **Share flow** in `SKILL.md`).
+Floating **Share progress** pill at the bottom. It opens an image share card (Change in score | Single score) with **Share on whatsapp**, **Instagram story** and **Save this image**. It makes no link. The header share icon opens the link flow: a "Share your health score data" sheet with Health score / Health score with its trends toggles, 2/15/30-day expiry and **Share**. That calls `POST /health-insights/insights/share` and opens the native share sheet with a `1-mg.in` link (see **Share flow** in `SKILL.md`).
+
+Untested labels (grey) link to `/labs/search/all?q=…`, not to the body system page.
 
 **Cross-check counts:** the counts must agree across the filter chips, the body-map labels, the score-accuracy sheet, and the homepage Body System Overview (out of range / normal / untested). Flag any mismatch.

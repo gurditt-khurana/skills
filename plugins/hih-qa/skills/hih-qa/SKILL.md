@@ -1,11 +1,16 @@
 ---
 name: hih-qa
-description: Use when asked to test, QA, or verify HIH (Health Records) flows on mweb in a browser. Covers opening the health-record page on a given environment, signing in with the test account, checking the homepage tabs, health score page, body system page, profile page, and health-document listings and detail pages (lab reports, prescriptions, radiology, vaccination), consult a doctor, parameter trends, and family view.
+description: Use when asked to test, QA, or verify HIH (Health Records) flows on mweb in a browser. Covers opening the health-record page on a given environment, signing in with the test account, checking the homepage tabs, health score page, body system page, profile page, and health-document listings and detail pages (lab reports, prescriptions, radiology, vaccination), consult a doctor, parameter trends, and family view. Also covers UX audits of animations and transitions with short screen recordings, and publishing audits to Confluence.
 ---
 
 # HIH QA
 
 Drive the browser with whatever browser-use or computer-use tool you have (e.g. the Playwright MCP in Claude Code). URL: prod `https://1mg.com/health-record`, else `https://<env>.1mg.com/health-record` (e.g. stag, earth).
+
+## Run scope
+
+- **Default: one page or flow that's about to be released.** Run QA and the UX audit on that page or flow only, plus the entry point that leads into it. If the user hasn't named a page or flow, ask which one. If they give a PR or branch, map its changed files to pages and confirm the list with them. Expect 10–20 minutes.
+- **Full suite: only when the user asks for it,** e.g. for a major mweb release, about once a month. Cover every page in **Pages** and every interaction with motion. It takes over an hour, so tell the user before starting. Prefer stag or earth with the test account, so the run doesn't stop for a prod OTP.
 
 ## Viewport (mobile only)
 
@@ -63,7 +68,23 @@ On prod the link exposes real health data. Ask the user before generating one.
 - Save everything from a run (screenshots, scripts, logs) in one folder on the user's desktop: `~/Desktop/hih-qa-audits/<pages-tested>_<YYYY-MM-DD>/` (create it if missing). Never save audit files inside the repo. If that folder already exists, add a suffix: `-2`, `-3`, and so on.
 - Take a screenshot only when something is breaking; inspect everything else via DOM snapshots, not screenshots. Many screenshots eat disk space.
 - Save screenshots as JPEG at 80% quality (e.g. `type: 'jpeg', quality: 80`), never full-quality PNG.
-- Write a `report.md` in the same folder. Put each screenshot in it with a caption directly below the image saying what's breaking, e.g. `![](home-320.jpg)` followed by *"320px: Download report CTA wraps to 2 lines and overlaps Report highlights."*
+- Write a `report.md` in the same folder for functional and layout bugs. Put each screenshot in it with a caption directly below the image saying what's breaking, e.g. `![](home-320.jpg)` followed by *"320px: Download report CTA wraps to 2 lines and overlaps Report highlights."*
+- Write UX findings (animations, transitions, interaction feel) in a separate `ux-audit.md`, each with a short screen recording in `recordings/`. See **UX audit** below.
+
+## UX audit
+
+On every page you test, run each interaction that has motion: sheets, steps inside sheets, tabs, toggles, skeleton → content, and page transitions. Follow `ux-audit.md`, which covers how to measure, how to record and trim short clips, and the file format. Recordings are the most important evidence here. Keep each clip a few seconds long, with no dead time.
+
+## Publish to Confluence
+
+When the run is done, publish it to the **Health Records** Confluence space (key `HEA`) in the folder **HIH Mweb QA & UX Audits**.
+
+1. Find the folder with CQL: `space = HEA AND type = folder AND title = "HIH Mweb QA & UX Audits"`. Create it at the space root only if it doesn't exist.
+2. In that folder, create one page per run, titled `<pages tested> – QA & UX audit – <DD Mon YYYY>`. Put the `report.md` content first, then `ux-audit.md`.
+3. Upload the screenshots and recordings as attachments to that page (`createConfluenceAttachment` returns a curl upload command), and embed each one next to its finding.
+4. Reply with the page link.
+
+If the run used a real user's account rather than a test account, the screenshots and recordings show real health data. Ask the user before publishing.
 
 ## Teardown (when done)
 
