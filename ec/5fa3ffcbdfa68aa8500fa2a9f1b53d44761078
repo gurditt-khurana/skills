@@ -1,0 +1,19 @@
+README.md
+  s_edd6559be489e2::t_916c5cb64e0cb8 1-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ec5fa3ffcbdfa68aa8500fa2a9f1b53d44761078",
+  "prompts": {},
+  "sessions": {
+    "s_edd6559be489e2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75f16e30-a457-4e35-8b7a-f59e252e401c",
+        "model": "unknown"
+      },
+      "human_author": "Gurditt Singh Khurana <gurditt.khurana@1mg.com>"
+    }
+  }
+}
